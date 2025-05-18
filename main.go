@@ -16,7 +16,7 @@ type event struct {
 type tabEvent [NMAX]event
 
 func main() {
-	var x, nData int
+	var x, nData, cek int
 	var event tabEvent
 	for {
 		menu()
@@ -24,12 +24,13 @@ func main() {
 		switch x {
 		case 1:
 			buatEvent(&event, &nData)
+			cek = 1
 		case 2:
-			cekProyek(&event, &nData)
+			listEvent(event, nData, cek)
 		case 3:
-			donasi(&event, nData)
+			cekProyek(&event, &nData)
 		case 4:
-			//eventSelesai()
+			donasi(&event, nData)
 		}
 		if x == 5 {
 			fmt.Print("Sampai Jumpa Kembali ^_^")
@@ -48,6 +49,7 @@ func menu() {
 	fmt.Println("                     MENU                    ")
 	fmt.Println("=============================================")
 	fmt.Println("1. Buat Event")
+	fmt.Println("2. List event")
 	fmt.Println("2. Cek Event ")
 	fmt.Println("3. Donasi	  ")
 	fmt.Println("4. Event Selesai")
@@ -72,16 +74,17 @@ func buatEvent(A *tabEvent, n *int) {
 	fmt.Println("4. Kreatif  ")
 	fmt.Println("(1/2/3/4) : ")
 	fmt.Scan(&z)
-	switch z {
-	case 1:
+
+	if z == 1 {
 		A[*n].kategori = "Teknologi"
-	case 2:
+	} else if z == 2 {
 		A[*n].kategori = "Kesehatan"
-	case 3:
+	} else if z == 3 {
 		A[*n].kategori = "Startup"
-	case 4:
+	} else if z == 4 {
 		A[*n].kategori = "Kreatif"
 	}
+
 	fmt.Print("Silahkan Masukan Judul Event : ")
 	fmt.Scan(&A[*n].nama)
 	fmt.Print("Masukan Target Dana : ")
@@ -107,19 +110,18 @@ func cekProyek(event *tabEvent, n *int) {
 	fmt.Print("opsi yang dipilih (1/2/3) ? ")
 	fmt.Scan(&cari)
 
-	switch cari {
-	case 1:
+	if cari == 1 {
 		fmt.Print("Masukkan nama/kategori proyek yang ingin diedit: ")
 		fmt.Scan(&namaDicari)
 		editProyek(event, *n, namaDicari)
-	case 2:
+	} else if cari == 2 {
 		fmt.Print("Masukkan nama/kategori proyek yang ingin dihapus: ")
 		fmt.Scan(&namaDicari)
 		hapusProyek(event, n, namaDicari)
-	case 3:
+	} else if cari == 3 {
 		fmt.Print("Masukkan nama/kategori proyek yang ingin dicari: ")
 		fmt.Scan(&namaDicari)
-		mencariProyek(*event, *n, namaDicari)
+		mencariSemuaProyek(*event, *n, namaDicari)
 	}
 }
 
@@ -136,15 +138,30 @@ func sequentialSearchIndeks(data tabEvent, jumlah int, x string) int {
 	return idx
 }
 
-func mencariProyek(data tabEvent, jumlah int, x string) {
-	var idx int
+func mencariSemuaProyek(data tabEvent, jumlah int, x string) {
+	var ketemu bool
+	var i int
 
-	idx = sequentialSearchIndeks(data, jumlah, x)
-	if idx == -1 {
+	ketemu = false
+	i = 0
+
+	for i < jumlah {
+		if data[i].nama == x || data[i].kategori == x {
+			fmt.Println("============================")
+			fmt.Printf("Proyek Ditemukan:\n")
+			fmt.Printf("Judul: %s\n", data[i].nama)
+			fmt.Printf("Kategori: %s\n", data[i].kategori)
+			fmt.Printf("Target Donasi: Rp %d\n", data[i].targetDonasi)
+			fmt.Printf("Total Donasi Terkumpul: Rp %d\n", data[i].jumlahDonasi)
+			fmt.Printf("Deskripsi Proyek: %s\n", data[i].deskripsiEvent)
+			fmt.Printf("Jumlah Donatur: %d\n", data[i].jumlahOrang)
+			fmt.Println("============================")
+			ketemu = true
+		}
+		i++
+	}
+	if !ketemu {
 		fmt.Println("Proyek Tidak Ditemukan")
-	} else {
-		fmt.Printf("Proyek Ditemukan: %s | Kategori: %s | Donasi: %d | Donatur: %d\n",
-			data[idx].nama, data[idx].kategori, data[idx].targetDonasi, data[idx].jumlahDonasi)
 	}
 
 }
@@ -197,9 +214,67 @@ func donasi(A *tabEvent, n int) {
 		fmt.Print("Proyek Tidak ditemukan")
 	} else {
 		fmt.Printf("Silahkan Masukan Nominal yang akan di donasikan ke proyek %s  : Rp ", A[idx].nama)
-		fmt.Scan(&donasi)
-		A[idx].jumlahDonasi += donasi
-		A[idx].jumlahOrang += 1
-		fmt.Printf("Terimakasih sudah melakukan donasi kepada Proyek %s sebesar %d", A[idx].nama, donasi)
+
+		if A[idx].jumlahDonasi >= A[idx].targetDonasi {
+			fmt.Print("Proyek ini sudah memenuhi target")
+		} else {
+			fmt.Scan(&donasi)
+			A[idx].jumlahDonasi += donasi
+			if A[idx].jumlahDonasi >= A[idx].targetDonasi {
+				fmt.Printf("Terimakasih sudah melakukan donasi kepada Proyek %s sebesar %d, dengan ini kami dapat menyentuh target donasi yang dibutuhkan ^_^", A[idx].nama, donasi)
+				A[idx].jumlahOrang += 1
+				return
+			}
+			fmt.Printf("Terimakasih sudah melakukan donasi kepada Proyek %s sebesar %d", A[idx].nama, donasi)
+			A[idx].jumlahOrang += 1
+
+		}
 	}
 }
+
+func listEvent(A tabEvent, n int, cek int) {
+	var answer string
+	if cek < 1 {
+		fmt.Print("Proyek Tidak ditemukan")
+	} else {
+		fmt.Printf("List proyek:\n")
+		cetakData(A, n, cek)
+	}
+	fmt.Println("Apakah anda ingin mengurutkan data berasarkan jumlah Donatur ? (y/n)")
+	fmt.Scan(&answer)
+	if answer == "y" {
+		insertionSort(&A, n)
+		fmt.Print("List proyrk setelah diurutkan:")
+		cetakData(A, n, cek)
+	} else {
+		return
+	}
+}
+
+func cetakData(A tabEvent, n int, cek int) {
+	var i int
+	for i = 0; i < n; i++ {
+		fmt.Println("=========================================================================================================")
+		fmt.Printf("Judul: %s || Kategori: %s || Target Donasi: Rp %d || Total Donasi Terkumpul: Rp %d || Jumlah Donatur: %d", A[i].nama, A[i].kategori, A[i].targetDonasi, A[i].jumlahDonasi, A[i].jumlahOrang)
+		fmt.Printf("Deskripsi Proyek: %s\n", A[i].deskripsiEvent)
+		fmt.Println("=========================================================================================================")
+	}
+}
+
+func insertionSort(A *tabEvent, n int) {
+	var i, pass int
+	var temp event
+
+	pass = 1
+	for pass <= n-1 {
+		i = pass
+		temp = A[pass]
+		for i > 0 && temp.jumlahOrang < A[i-1].jumlahOrang {
+			A[i] = A[i-1]
+			i = i - 1
+		}
+		A[i] = temp
+		pass = pass + 1
+	}
+}
+
