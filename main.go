@@ -11,6 +11,7 @@ type event struct {
 	targetDonasi   int
 	deskripsiEvent string
 	jumlahOrang    int
+	status         bool
 }
 
 type tabEvent [NMAX]event
@@ -50,9 +51,8 @@ func menu() {
 	fmt.Println("=============================================")
 	fmt.Println("1. Buat Event")
 	fmt.Println("2. List event")
-	fmt.Println("2. Cek Event ")
-	fmt.Println("3. Donasi	  ")
-	fmt.Println("4. Event Selesai")
+	fmt.Println("3. Cek Event ")
+	fmt.Println("4. Donasi	  ")
 	fmt.Println("5. Exit")
 	fmt.Print("Pilih (1/2/3/4/5) ? ")
 }
@@ -138,6 +138,20 @@ func sequentialSearchIndeks(data tabEvent, jumlah int, x string) int {
 	return idx
 }
 
+func sequentialSearchStatus(data tabEvent, jumlah int) {
+	var idx, i int
+	for i < jumlah {
+		if data[i].status == true {
+			idx = i
+			fmt.Println("=========================================================================================================")
+			fmt.Printf("Judul: %s || Kategori: %s || Target Donasi: Rp %d || Total Donasi Terkumpul: Rp %d || Jumlah Donatur: %d", data[idx].nama, data[idx].kategori, data[idx].targetDonasi, data[idx].jumlahDonasi, data[idx].jumlahOrang)
+			fmt.Printf("Deskripsi Proyek: %s\n", data[idx].deskripsiEvent)
+			fmt.Println("=========================================================================================================")
+		}
+		i++
+	}
+}
+
 func mencariSemuaProyek(data tabEvent, jumlah int, x string) {
 	var ketemu bool
 	var i int
@@ -212,6 +226,7 @@ func donasi(A *tabEvent, n int) {
 
 	if idx == -1 {
 		fmt.Print("Proyek Tidak ditemukan")
+		A[idx].status = true
 	} else {
 		fmt.Printf("Silahkan Masukan Nominal yang akan di donasikan ke proyek %s  : Rp ", A[idx].nama)
 
@@ -233,16 +248,22 @@ func donasi(A *tabEvent, n int) {
 }
 
 func listEvent(A tabEvent, n int, cek int) {
-	var answer string
+	var answer int
 	if cek < 1 {
 		fmt.Print("Proyek Tidak ditemukan")
 	} else {
 		fmt.Printf("List proyek:\n")
 		cetakData(A, n, cek)
 	}
-	fmt.Println("Apakah anda ingin mengurutkan data berasarkan jumlah Donatur ? (y/n)")
+	fmt.Print()
+	fmt.Println("1. Lihat proyek yang sudah mencapai target")
+	fmt.Println("2. Urutkan list proyek berdasarkan jumlah donatur")
+	fmt.Println("3. Kembali")
+	fmt.Println("Pilih (1/2/3)")
 	fmt.Scan(&answer)
-	if answer == "y" {
+	if answer == 1 {
+		sequentialSearchStatus(A, n)
+	} else if answer == 2 {
 		insertionSort(&A, n)
 		fmt.Print("List proyrk setelah diurutkan:")
 		cetakData(A, n, cek)
@@ -278,3 +299,17 @@ func insertionSort(A *tabEvent, n int) {
 	}
 }
 
+func urutkanDataBerdasarkanDonasi(A *tabEvent, n int) {
+	var temp event
+	for i := 0; i < n-1; i++ {
+		for j := 0; j < n-i-1; j++ {
+			if A[j].jumlahDonasi > A[j+1].jumlahDonasi {
+				// Tukar posisi
+				temp = A[j]
+				A[j] = A[j+1]
+				A[j+1] = temp
+			}
+		}
+	}
+	fmt.Println("Data berhasil diurutkan berdasarkan jumlah donasi dari terkecil ke terbesar.")
+}
