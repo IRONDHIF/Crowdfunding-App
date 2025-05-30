@@ -111,6 +111,8 @@ func buatproyek(A *tabProyek, n *int) {
 			break
 		}
 	}
+	A[*n].jumlahDonasi = 0
+	A[*n].jumlahOrang = 0
 	fmt.Println("================================")
 	fmt.Println("Proyek berhasil dipublikasikan.")
 	fmt.Println("================================")
@@ -358,7 +360,7 @@ func editProyek(data *tabProyek, jumlah int, x string) {
 				break
 			}
 			if i < 100 {
-				data[*&jumlah].deskripsiproyek[i] = word
+				data[*&idx].deskripsiproyek[i] = word
 				i++
 			} else {
 				fmt.Println("Deskripsi terlalu panjang, dihentikan.")
@@ -410,7 +412,7 @@ func mencariMin(A tabProyek, n int) int {
 	return min
 }
 
-// FUNC PRO SEARCHING
+// FUNCTION SEARCHING
 func sequentialSearchIndeks(data tabProyek, n int, x string) int {
 	var idx, i int
 
@@ -424,25 +426,25 @@ func sequentialSearchIndeks(data tabProyek, n int, x string) int {
 	return idx
 }
 
-func sequentialSearchStatus(A tabProyek, n int) {
-	var idx, i, j int
-	if A[i].status == true {
-		for i < n {
-			idx = i
+func sequentialSearchStatus(data tabProyek, n int) {
+	var found bool
+	var i, j int
+
+	found = false
+	for i = 0; i < n; i++ {
+		if data[i].status {
 			fmt.Println("=========================================================================================================")
-			fmt.Printf("ID: %d || Judul: %s || Kategori: %s || Target Donasi: Rp %d || Total Donasi Terkumpul: Rp %d || Jumlah Donatur: %d\n", A[idx].id, A[idx].nama, A[idx].kategori, A[idx].targetDonasi, A[idx].jumlahDonasi, A[idx].jumlahOrang)
+			fmt.Printf("ID: %d || Judul: %s || Kategori: %s || Target Donasi: Rp %d || Total Donasi Terkumpul: Rp %d || Jumlah Donatur: %d\n", data[i].id, data[i].nama, data[i].kategori, data[i].targetDonasi, data[i].jumlahDonasi, data[i].jumlahOrang)
 			fmt.Print("Deskripsi Proyek: ")
-			j = 0
-			for j < 100 && A[i].deskripsiproyek[j] != "" && A[i].deskripsiproyek[j] != "." {
-				fmt.Print(A[i].deskripsiproyek[j], " ")
-				j++
+			for j = 0; j < 100 && data[i].deskripsiproyek[j] != "" && data[i].deskripsiproyek[j] != "."; j++ {
+				fmt.Print(data[i].deskripsiproyek[j], " ")
 			}
 			fmt.Println()
-			fmt.Println("=========================================================================================================")
-			i++
+			found = true
 		}
-	} else {
-		fmt.Println("Belum Ada Donasi yang Mencapai Target,")
+	}
+	if !found {
+		fmt.Println("Belum ada proyek yang mencapai target.")
 	}
 }
 
