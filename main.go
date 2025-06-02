@@ -61,7 +61,7 @@ func menu() {
 
 func buatproyek(A *tabProyek, n *int) {
 	var z, i int
-
+	var word string
 	if *n > NMAX-1 {
 		*n = NMAX
 		fmt.Println("Kuota Proyek Sudah Mencapai Batas Maksimum")
@@ -98,7 +98,6 @@ func buatproyek(A *tabProyek, n *int) {
 	fmt.Println("Tuliskan deskripsi proyek (akhiri dengan titik '.'): ")
 	i = 0
 	for {
-		var word string
 		fmt.Scan(&word)
 		if word == "." {
 			break
@@ -129,8 +128,8 @@ func listproyek(A tabProyek, n int) {
 		cetakData(A, n)
 		fmt.Print()
 		fmt.Println("1. Lihat proyek yang sudah mencapai target")
-		fmt.Println("2. Urutkan list proyek berdasarkan jumlah donatur (menurun)")
-		fmt.Println("3. Urutkan list proyek berdasarkan jumlah donatur (menaik)")
+		fmt.Println("2. Urutkan list proyek berdasarkan jumlah donatur (menaik)")
+		fmt.Println("3. Urutkan list proyek berdasarkan jumlah donatur (menurun)")
 		fmt.Println("4. Kembali")
 		fmt.Print("Pilih (1/2/3/4) : ")
 		fmt.Scan(&answer)
@@ -139,11 +138,11 @@ func listproyek(A tabProyek, n int) {
 			sequentialSearchStatus(A, n)
 		} else if answer == 2 {
 			insertionSort(&A, n)
-			fmt.Println("Proyek telah diurutkan berdasarkan jumlah donatur (menurun):")
+			fmt.Println("Proyek telah diurutkan berdasarkan jumlah donatur (menaik):")
 			cetakData(A, n)
 		} else if answer == 3 {
 			selectionSort(&A, n)
-			fmt.Println("Proyek telah diurutkan berdasarkan jumlah donatur (menaik):")
+			fmt.Println("Proyek telah diurutkan berdasarkan jumlah donatur (menurun):")
 			cetakData(A, n)
 		} else {
 			return
@@ -341,7 +340,7 @@ func hapusProyek(data *tabProyek, jumlah *int, x string) {
 
 func editProyek(data *tabProyek, jumlah int, x string) {
 	var idx, i int
-
+	var word string
 	idx = sequentialSearchIndeks(*data, jumlah, x)
 	if idx == -1 {
 		fmt.Println("Proyek tidak ditemukan")
@@ -354,7 +353,6 @@ func editProyek(data *tabProyek, jumlah int, x string) {
 		fmt.Println("Deskripsikan Proyek anda (masukan '.' untuk mengakhiri):")
 		i = 0
 		for {
-			var word string
 			fmt.Scan(&word)
 			if word == "." {
 				break
