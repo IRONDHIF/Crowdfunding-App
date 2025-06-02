@@ -199,7 +199,7 @@ func cekProyek(proyek *tabProyek, n *int) {
 				fmt.Printf("ID: %d || Judul: %s || Kategori: %s || Target Donasi: Rp %d || Total Donasi Terkumpul: Rp %d || Jumlah Donatur: %d\n", proyek[idxMax].id, proyek[idxMax].nama, proyek[idxMax].kategori, proyek[idxMax].targetDonasi, proyek[idxMax].jumlahDonasi, proyek[idxMax].jumlahOrang)
 				fmt.Print("Deskripsi Proyek: ")
 				j = 0
-				for j < 100 && proyek[idxMax].deskripsiproyek[j] != "" && proyek[idxMax].deskripsiproyek[j] != "." {
+				for j < 100 && proyek[idxMax].deskripsiproyek[j] != "." {
 					fmt.Print(proyek[idxMax].deskripsiproyek[j], " ")
 					j++
 				}
@@ -211,7 +211,7 @@ func cekProyek(proyek *tabProyek, n *int) {
 				fmt.Printf("ID: %d || Judul: %s || Kategori: %s || Target Donasi: Rp %d || Total Donasi Terkumpul: Rp %d || Jumlah Donatur: %d\n", proyek[idxMin].id, proyek[idxMin].nama, proyek[idxMin].kategori, proyek[idxMin].targetDonasi, proyek[idxMin].jumlahDonasi, proyek[idxMin].jumlahOrang)
 				fmt.Print("Deskripsi Proyek: ")
 				j = 0
-				for j < 100 && proyek[idxMin].deskripsiproyek[j] != "" && proyek[idxMax].deskripsiproyek[j] != "." {
+				for j < 100 && proyek[idxMax].deskripsiproyek[j] != "." {
 					fmt.Print(proyek[idxMin].deskripsiproyek[j], " ")
 					j++
 				}
@@ -276,7 +276,7 @@ func mencariSemuaProyek(data tabProyek, n int, x string) {
 			fmt.Println("Deskripsi Proyek: ")
 			j = 0
 
-			for j < 100 && data[i].deskripsiproyek[j] != "" && data[i].deskripsiproyek[j] != "." {
+			for j < 100 && data[i].deskripsiproyek[j] != "." {
 				fmt.Print(data[i].deskripsiproyek[j], " ")
 				j++
 			}
@@ -311,7 +311,7 @@ func cariIdProyek(data tabProyek, n int, x int) {
 		fmt.Println("Deskripsi Proyek: ")
 		j = 0
 
-		for j < 100 && data[idx].deskripsiproyek[j] != "" && data[idx].deskripsiproyek[j] != "." {
+		for j < 100 && data[idx].deskripsiproyek[j] != "." {
 			fmt.Print(data[idx].deskripsiproyek[j], " ")
 			j++
 		}
@@ -378,7 +378,7 @@ func cetakData(A tabProyek, n int) {
 		fmt.Printf("ID: %d || Judul: %s || Kategori: %s || Target Donasi: Rp %d || Total Donasi Terkumpul: Rp %d || Jumlah Donatur: %d\n", A[i].id, A[i].nama, A[i].kategori, A[i].targetDonasi, A[i].jumlahDonasi, A[i].jumlahOrang)
 		fmt.Print("Deskripsi Proyek: ")
 		j = 0
-		for j < 100 && A[i].deskripsiproyek[j] != "" && A[i].deskripsiproyek[j] != "." {
+		for j < 100 && A[i].deskripsiproyek[j] != "." {
 			fmt.Print(A[i].deskripsiproyek[j], " ")
 			j++
 		}
@@ -434,7 +434,7 @@ func sequentialSearchStatus(data tabProyek, n int) {
 			fmt.Println("=========================================================================================================")
 			fmt.Printf("ID: %d || Judul: %s || Kategori: %s || Target Donasi: Rp %d || Total Donasi Terkumpul: Rp %d || Jumlah Donatur: %d\n", data[i].id, data[i].nama, data[i].kategori, data[i].targetDonasi, data[i].jumlahDonasi, data[i].jumlahOrang)
 			fmt.Print("Deskripsi Proyek: ")
-			for j = 0; j < 100 && data[i].deskripsiproyek[j] != "" && data[i].deskripsiproyek[j] != "."; j++ {
+			for j = 0; j < 100 && data[i].deskripsiproyek[j] != "."; j++ {
 				fmt.Print(data[i].deskripsiproyek[j], " ")
 			}
 			fmt.Println()
